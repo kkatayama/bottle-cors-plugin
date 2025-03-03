@@ -33,19 +33,17 @@ class CorsPluginObject():
         Adds the OPTIONS route to all endpoints.
         """
         route('/', method='OPTIONS', callback=self.options_function)
-        route(
-            '/<filepath:path>', method='OPTIONS', callback=self.options_function
-        )
+        route('/<filepath:path>', method='OPTIONS', callback=self.options_function)
 
     def options_function(self):
         pass
 
     def cors_headers(self):
         response.headers['Access-Control-Allow-Origin'] = self._get_origin()
-        response.headers['Access-Control-Allow-Methods'] = '\
-            GET, POST, PUT, PATCH, OPTIONS, DELETE'
-        response.headers['Access-Control-Allow-Headers'] = '\
-            Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, Authorization'
+        response.add_header('Access-Control-Allow-Methods',
+                             'GET, POST, PUT, PATCH, OPTIONS, DELETE, HEAD')
+        response.add_header('Access-Control-Allow-Headers',
+                             'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, Authorization')
 
     def _get_origin(self):
         """
