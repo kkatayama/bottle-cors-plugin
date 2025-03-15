@@ -18,6 +18,7 @@ class CorsPluginObject():
         bottle.cors = True
         self.origins = origins
         self.bottle = bottle
+        self.fqdn = ""
         self._options_route()
 
     def apply(self, fn, context):
@@ -58,9 +59,11 @@ class CorsPluginObject():
         # Add all origins ever seen
         if client_origin not in self.origins:
             self.origins.append(client_origin)
+            self.fqdn = client_origin
 
         for origin in self.origins:
             if origin == client_origin:
+                self.fqdn = origin
                 return origin
         return self.origins[0]
 
