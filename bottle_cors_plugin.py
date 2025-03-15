@@ -44,6 +44,7 @@ class CorsPluginObject():
                              'GET, POST, PUT, PATCH, OPTIONS, DELETE, HEAD')
         response.add_header('Access-Control-Allow-Headers',
                              'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, Authorization')
+        response.add_header('Access-Control-Allow-Credentials', 'true')
 
     def _get_origin(self):
         """
@@ -53,6 +54,11 @@ class CorsPluginObject():
         if '*' in self.origins: return '*'
         if not client_origin:
             return self.origins[0]
+
+        # Add all origins ever seen
+        if client_origin not in self.origins:
+            self.origins.append(client_origin)
+
         for origin in self.origins:
             if origin == client_origin:
                 return origin
